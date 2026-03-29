@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шақыру Билеті | Ақтілек & Арай</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <style>
+        :root {
+            --primary-start: #2d5a27; 
+            --primary-end: #1b4332;
+            --gold-start: #d4af37;
+            --gold-end: #f5e6a0;
+            --bg-soft: #fffdf2; 
+            --telegram-blue: #0088cc;
+            
+            --primary-gradient: linear-gradient(135deg, var(--primary-start) 0%, var(--primary-end) 100%);
+            --gold-gradient: linear-gradient(135deg, var(--gold-start) 0%, var(--gold-end) 100%);
+            --tg-gradient: linear-gradient(135deg, #0088cc 0%, #00aaff 100%);
+        }
+
+        body {
+            font-family: 'Lora', serif;
+            background: radial-gradient(circle at top, #ffffff 0%, var(--bg-soft) 100%);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            background-attachment: fixed;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232d5a27' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* Барлық тақырыптар мен арнайы кластарға Yeseva One шрифтін қолдану */
+        h1, h2, h3, .fancy-font, .names-font, header p { 
+            font-family: 'Yeseva One', serif; 
+            font-weight: 300;
+        }
+
+        .floating-action-btn {
+            position: fixed;
+            right: 20px;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            border-radius: 30px;
+            color: white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .floating-action-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .music-btn-fixed { bottom: 30px; background: var(--primary-gradient); }
+        .wish-btn-fixed { bottom: 95px; background: var(--gold-gradient); }
+
+        .floating-action-btn span {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .pulse-effect { animation: pulse-gold 2s infinite; }
+        @keyframes pulse-gold {
+            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(212, 175, 55, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+        
+        .spin { animation: spin 5s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        .accent-text { color: var(--primary-start); }
+        .gold-accent-text { color: var(--gold-start); }
+
+        .highlight-section {
+            background: white; 
+            border-radius: 24px;
+            padding: 35px 25px;
+            margin: 30px 15px;
+            box-shadow: 0 10px 30px rgba(45, 90, 39, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .highlight-section::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 4px;
+            background: var(--gold-gradient);
+        }
+
+        .wish-card {
+            background: linear-gradient(to right, #ffffff, #fffdf2);
+            border-left: 5px solid var(--primary-start);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .custom-input {
+            width: 100%; padding: 1.1rem 1.4rem; border-radius: 15px; border: 2px solid #f0f0f0;
+            background-color: #fafafa; font-weight: 500; transition: all 0.3s ease; outline: none;
+        }
+        .custom-input:focus { 
+            border-color: var(--gold-start); 
+            background-color: white; 
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1); 
+        }
+
+        .primary-action-btn {
+            width: 100%; padding: 1.1rem; border-radius: 15px; 
+            background: var(--primary-gradient);
+            color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+            box-shadow: 0 8px 20px rgba(45, 90, 39, 0.3); transition: all 0.3s ease;
+        }
+        .primary-action-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(45, 90, 39, 0.4); }
+
+        .gold-action-btn {
+            display: inline-block; padding: 1rem 3rem; border-radius: 35px; 
+            background: var(--gold-gradient);
+            color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+            box-shadow: 0 6px 15px rgba(212, 175, 55, 0.2); transition: all 0.3s ease;
+        }
+        .gold-action-btn:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3); }
+
+        .time-item-box {
+            background: linear-gradient(135deg, #ffffff 0%, #fffdf2 100%);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+        
+        .ornament-img {
+            opacity: 0.1;
+            filter: sepia(1) saturate(2) hue-rotate(60deg);
+        }
+
+        #sliderTrack {
+            display: flex;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .slider-dot {
+            width: 8px; height: 8px; border-radius: 50%; background-color: rgba(0,0,0,0.2); transition: all 0.3s ease;
+        }
+        .slider-dot.active { background-color: var(--gold-start); transform: scale(1.5); }
+    </style>
+</head>
+<body class="text-gray-700 antialiased">
+
+    <!-- Көшіп жүретін батырмалар -->
+    <button onclick="toggleWishModal()" class="floating-action-btn wish-btn-fixed pulse-effect">
+        <i class="fas fa-pen-nib"></i>
+        <span>Тілек білдіру</span>
+    </button>
+
+    <button onclick="toggleMusic()" class="floating-action-btn music-btn-fixed">
+        <i id="musicIcon" class="fas fa-music"></i>
+        <span>Әуен қосу</span>
+    </button>
+
+    <audio id="bgMusic" loop>
+        <source src="ulinem.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="max-w-md mx-auto bg-white min-h-screen shadow-2xl relative overflow-hidden border-x-8 border-[#d4af37]">
+        <header class="text-center pt-12 pb-10 px-6 relative z-10" data-aos="fade-down">
+            <p class="text-5xl mb-2 accent-text">Үйлену тойы</p>
+            <div class="w-24 h-1 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mx-auto mt-4"></div>
+        </header>
+
+        <!-- Негізгі фото -->
+        <div class="px-6 mb-12" data-aos="zoom-in">
+            <div class="aspect-[3/4] rounded-t-[120px] rounded-b-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] border-4 border-[#d4af37] relative">
+                <img src="12.jpg" 
+                     alt="Жұптың суреті" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+                <div class="absolute inset-0 flex flex-col items-center justify-end pb-12 text-white px-4 text-center">
+                    <h1 class="text-7xl leading-tight drop-shadow-lg names-font">
+                        Берікбол <br> 
+                        <span class="text-5xl gold-accent-text italic">&</span> <br> 
+                        Жaмиля
+                    </h1>
+                </div>
+            </div>
+        </div>
+
+        <!-- Шақыру мәтіні -->
+        <section class="highlight-section text-center" data-aos="fade-up">
+            <h2 class="text-4xl mb-6 accent-text">Құрметті қонақтар!</h2>
+            <p class="leading-relaxed text-gray-600 mb-8 text-lg font-light italic px-4 text-center">
+                Сіздерді ұлымыз бен келініміздің шаңырақ көтеру тойының қадірлі қонағы болуға шақырамыз! Тілектес ағайын-туыс, дос-жаранның ортасында қуанышымызға ортақ болыңыздар.
+            </p>
+            <div class="py-8 bg-gradient-to-b from-[#fffdf2] to-white rounded-2xl border border-[#d4af37]/10">
+                <p class="text-lg text-gray-400 fancy-font mb-2">Той иелері:</p>
+                <p class="text-2xl font-bold accent-text tracking-widest uppercase">Ислам - Сәуле</p>
+            </div>
+        </section>
+
+        <!-- Күні мен уақыты -->
+        <section class="highlight-section text-center" data-aos="fade-up">
+            <h3 class="text-3xl mb-6 font-bold accent-text">Күні мен уақыты</h3>
+            <div class="flex items-center justify-center gap-8 py-4">
+                <div class="flex flex-col items-center">
+                    <div class="w-14 h-14 rounded-full bg-gradient-to-br from-[#fffdf2] to-[#f5f0d5] flex items-center justify-center mb-2 border border-[#d4af37]/20">
+                        <i class="far fa-calendar-alt text-2xl gold-accent-text"></i>
+                    </div>
+                    <p class="text-xl font-bold">13 Маусым</p>
+                    <p class="text-sm text-gray-400">2026 жыл</p>
+                </div>
+                <div class="w-[1px] h-16 bg-gradient-to-b from-transparent via-gray-200 to-transparent"></div>
+                <div class="flex flex-col items-center">
+                    <div class="w-14 h-14 rounded-full bg-gradient-to-br from-[#fffdf2] to-[#f5f0d5] flex items-center justify-center mb-2 border border-[#d4af37]/20">
+                        <i class="far fa-clock text-2xl gold-accent-text"></i>
+                    </div>
+                    <p class="text-xl font-bold">18:00</p>
+                    <p class="text-sm text-gray-400">Басталуы</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Кері санақ -->
+        <section class="highlight-section text-center" data-aos="fade-up">
+            <h3 class="text-center text-3xl mb-8 font-bold accent-text">Тойға дейін:</h3>
+            <div class="flex justify-center gap-4">
+                <div class="time-item-box w-20 py-4 rounded-2xl shadow-sm">
+                    <div class="text-3xl font-black accent-text" id="days">00</div>
+                    <div class="text-[10px] uppercase font-bold text-gray-400 tracking-tighter">Күн</div>
+                </div>
+                <div class="time-item-box w-20 py-4 rounded-2xl shadow-sm">
+                    <div class="text-3xl font-black accent-text" id="hours">00</div>
+                    <div class="text-[10px] uppercase font-bold text-gray-400 tracking-tighter">Сағат</div>
+                </div>
+                <div class="time-item-box w-20 py-4 rounded-2xl shadow-sm">
+                    <div class="text-3xl font-black accent-text" id="minutes">00</div>
+                    <div class="text-[10px] uppercase font-bold text-gray-400 tracking-tighter">Мин</div>
+                </div>
+                <div class="time-item-box w-20 py-4 rounded-2xl shadow-sm">
+                    <div class="text-3xl font-black accent-text" id="seconds">00</div>
+                    <div class="text-[10px] uppercase font-bold text-gray-400 tracking-tighter">Сек</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Мекенжай -->
+        <section class="highlight-section text-center" data-aos="fade-up">
+            <h2 class="text-4xl mb-6 accent-text">Мекенжайымыз</h2>
+            <div class="bg-gradient-to-br from-white to-[#fffdf2] p-10 rounded-3xl border border-[#d4af37]/10 shadow-inner">
+                <i class="fas fa-map-marker-alt text-5xl gold-accent-text mb-4"></i>
+                <h3 class="text-center font-bold mb-3 accent-text uppercase tracking-wider">"Royal Palace" мейрамханасы</h3>
+                <p class="text-lg text-gray-300 mb-8 italic text-center">Әйтеке Би к., Пиримов көшесі</p>
+                <a href="https://maps.app.goo.gl/roLBG7ZSNYXhZPrf8" target="_blank" class="gold-action-btn">Картаны ашу</a>
+            </div>
+        </section>
+
+        <!-- RSVP -->
+        <section class="highlight-section" data-aos="fade-up">
+            <h2 class="text-4xl text-center mb-2 accent-text font-bold uppercase tracking-widest text-center px-4">Тойға келесіз бе?</h2>
+            <p class="text-center text-sm text-gray-400 mb-8 font-medium italic">Жауабыңызды күтеміз</p>
+            <form id="rsvpForm" class="space-y-6">
+                <input type="hidden" name="formType" value="rsvp">
+                <input type="text" name="name" placeholder="Аты-жөніңіз" required class="custom-input">
+                <select name="status" class="custom-input text-gray-500">
+                    <option value="Келемін">Келемін</option>
+                    <option value="Жұбайыммен келемін">Жұбайыммен келемін</option>
+                    <option value="Келе алмаймын">Келе алмаймын</option>
+                </select>
+                <button type="submit" class="primary-action-btn">Жіберу</button>
+            </form>
+        </section>
+
+        <!-- Тілектер тізімі -->
+        <section class="highlight-section" data-aos="fade-up">
+            <h2 class="text-4xl text-center mb-6 accent-text">Ақ тілектер</h2>
+            <div id="wishesLoading" class="text-center py-8"><div class="inline-block animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-[#1b4332]"></div></div>
+            <div id="wishesContainer" class="max-h-[500px] overflow-y-auto px-1 space-y-6 hidden scrollbar-hide"></div>
+            <div id="noWishes" class="text-center text-gray-300 py-6 hidden italic"><p>Алғашқы тілек білдіруші болыңыз...</p></div>
+        </section>
+
+        <!-- ТЕЛЕГРАМ БӨЛІМІ -->
+        <section class="highlight-section text-center" data-aos="fade-up">
+            <h2 class="text-4xl mb-4 accent-text">Той суреттері</h2>
+            <p class="text-gray-500 mb-8 font-light italic px-4">
+                Барлық фото мен видеоларды осы каналдан көре аласыз:
+            </p>
+            <a href="https://t.me/your_wedding_channel" target="_blank" class="inline-flex items-center gap-4 bg-gradient-to-r from-[#0088cc] to-[#00aaff] text-white px-10 py-5 rounded-full font-bold shadow-xl transition hover:brightness-110 uppercase text-xs tracking-widest">
+                <i class="fab fa-telegram-plane text-2xl"></i>
+                Телеграм канал
+            </a>
+        </section>
+
+        <!-- Футер -->
+        <footer class="bg-gradient-to-b from-[#2d5a27] to-[#1b4332] text-white text-center py-16 relative border-t-8 border-[#d4af37]">
+            <h2 class="text-4xl mb-4 gold-accent-text">Берікбол & Жамиля</h2>
+            <p class="text-gray-300 text-sm font-light tracking-[0.3em] uppercase">Бақытты болыңыздар!</p>
+            <div class="mt-10 text-[10px] text-white/20 uppercase tracking-[0.5em]">Қызылорда - 2026</div>
+        </footer>
+    </div>
+
+    <!-- Тілек жазу модальді терезесі -->
+    <div id="wishModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center px-4 bg-black/80 backdrop-blur-md transition-all duration-300">
+        <div class="relative bg-white w-full max-w-md p-10 rounded-[35px] shadow-2xl border-4 border-[#d4af37] transform transition-all">
+            <button onclick="closeWishModal()" class="absolute top-6 right-6 text-gray-300 hover:text-gray-600 transition"><i class="fas fa-times text-2xl"></i></button>
+            <h2 class="text-5xl text-center mb-2 accent-text">Жылы лебіз</h2>
+            <p class="text-xs text-center font-bold gold-accent-text mb-8 tracking-widest uppercase">✨ Үздік тілекке тойда сыйлық беріледі ✨</p>
+            <form id="wishForm" class="space-y-5">
+                <input type="hidden" name="formType" value="wish">
+                <input type="text" name="name" placeholder="Аты-жөніңіз" required class="custom-input">
+                <textarea name="message" placeholder="Ақ тілегіңіз..." rows="4" required class="custom-input resize-none"></textarea>
+                <button type="submit" class="primary-action-btn">Жіберу</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        AOS.init({ duration: 1200, once: true });
+        
+        const bgMusic = document.getElementById('bgMusic');
+        const musicIcon = document.getElementById('musicIcon');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) { 
+                bgMusic.pause(); musicIcon.classList.replace('fa-pause', 'fa-music'); musicIcon.parentElement.classList.remove('spin');
+            } else { 
+                bgMusic.play(); musicIcon.classList.replace('fa-music', 'fa-pause'); musicIcon.parentElement.classList.add('spin'); 
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function toggleWishModal() {
+            const m = document.getElementById('wishModal');
+            m.classList.toggle('hidden');
+        }
+        function closeWishModal() {
+            document.getElementById('wishModal').classList.add('hidden');
+        }
+
+        const weddingDate = new Date('June 13, 2026 18:00:00').getTime();
+        setInterval(() => {
+            const distance = weddingDate - new Date().getTime();
+            if (distance < 0) return;
+            document.getElementById("days").innerText = Math.floor(distance / 86400000).toString().padStart(2, '0');
+            document.getElementById("hours").innerText = Math.floor((distance % 86400000) / 3600000).toString().padStart(2, '0');
+            document.getElementById("minutes").innerText = Math.floor((distance % 3600000) / 60000).toString().padStart(2, '0');
+            document.getElementById("seconds").innerText = Math.floor((distance % 60000) / 1000).toString().padStart(2, '0');
+        }, 1000);
+
+        const track = document.getElementById('sliderTrack');
+        const dots = document.querySelectorAll('.slider-dot');
+        let currentIndex = 0;
+        const totalSlides = 3;
+
+        function updateSlider() {
+            if (!track) return;
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            dots.forEach((dot, idx) => {
+                if (idx === currentIndex) dot.classList.add('active');
+                else dot.classList.remove('active');
+            });
+        }
+        function nextSlide() { currentIndex = (currentIndex + 1) % totalSlides; updateSlider(); }
+        function prevSlide() { currentIndex = (currentIndex - 1 + totalSlides) % totalSlides; updateSlider(); }
+        setInterval(nextSlide, 5000);
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyco6Neh_XoTcEj5JjDqUXB8Gu7VmpkUnc9Jfk_cxcAD-e1Epg43zyim2Af33ZcRlWbow/exec';
+
+        function fetchWishes() {
+            fetch(scriptURL + '?t=' + Date.now(), { redirect: 'follow' })
+                .then(res => res.json())
+                .then(wishes => {
+                    const container = document.getElementById('wishesContainer');
+                    const loading = document.getElementById('wishesLoading');
+                    const noWishes = document.getElementById('noWishes');
+                    if (loading) loading.style.display = 'none';
+                    if (!wishes || wishes.length === 0 || !Array.isArray(wishes)) {
+                        if (noWishes) noWishes.style.display = 'block';
+                    } else {
+                        container.innerHTML = ''; container.classList.remove('hidden'); if (noWishes) noWishes.style.display = 'none';
+                        wishes.forEach(w => {
+                            if(w.name && w.message) {
+                                const d = document.createElement('div'); d.className = 'wish-card';
+                                d.innerHTML = `<div class="wish-name text-lg">${w.name}</div><div class="text-gray-500 mt-2 font-light italic leading-relaxed text-left">${w.message}</div>`;
+                                container.appendChild(d);
+                            }
+                        });
+                    }
+                }).catch(err => {
+                    if (document.getElementById('wishesLoading')) {
+                        document.getElementById('wishesLoading').innerHTML = '<p class="text-gray-400 text-xs italic">Тілектерді жүктеу мүмкін болмады.</p>';
+                    }
+                });
+        }
+        window.addEventListener('load', fetchWishes);
+
+        [document.getElementById('rsvpForm'), document.getElementById('wishForm')].forEach(f => {
+            if (!f) return;
+            f.addEventListener('submit', e => {
+                e.preventDefault();
+                const b = f.querySelector('button'); const t = b.innerText; b.innerText = "..."; b.disabled = true;
+                fetch(scriptURL, { method: 'POST', body: new FormData(f) })
+                .then(() => { 
+                    alert("Рахмет! Жауабыңыз жіберілді."); f.reset(); b.innerText = t; b.disabled = false;
+                    if(f.id === 'wishForm') { closeWishModal(); setTimeout(fetchWishes, 2000); }
+                })
+                .catch(err => {
+                    alert("Хабарлама жіберілді!"); f.reset(); b.innerText = t; b.disabled = false;
+                    if(f.id === 'wishForm') { closeWishModal(); setTimeout(fetchWishes, 2000); }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
